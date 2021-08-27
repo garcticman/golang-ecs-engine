@@ -22,6 +22,8 @@ func (i InputSystem) Execute(scene Core.Scene, entities []Core.Entity) {
 	switch event.(type) {
 	case *sdl.QuitEvent:
 		inputType = Input.Quit
+	default:
+		return
 	}
 
 	for _, entity := range entities {

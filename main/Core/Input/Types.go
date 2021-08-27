@@ -2,6 +2,7 @@ package Input
 
 type Type uint16
 
-const(
-	Quit = Type(1)
+const (
+	NonInput = Type(0)
+	Quit     = Type(1)
 )
