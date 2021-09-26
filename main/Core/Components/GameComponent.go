@@ -5,19 +5,28 @@ import "JamEngine/main/Core"
 const GameComponentID = "GameComponent"
 
 type GameComponent struct {
-	scenes []Core.Scene
+	scenes       []Core.Scene
 	currentScene uint64
-	quit bool
+	quit         bool
 }
 
 func (game *GameComponent) Start() {
+	scene := game.scenes[game.currentScene]
+	for !game.quit {
+		for _, system := range scene.GetInitializeSystems() {
+			componentIDs := system.Filter()
 
+			entities := scene.GetEntitiesWithFilter(componentIDs)
+
+			system.Execute(scene, entities)
+		}
+	}
 }
 
 func (game *GameComponent) Update() {
 	scene := game.scenes[game.currentScene]
 	for !game.quit {
-		for _, system := range scene.GetSystems() {
+		for _, system := range scene.GetUpdateSystems() {
 			componentIDs := system.Filter()
 
 			entities := scene.GetEntitiesWithFilter(componentIDs)

@@ -1,4 +1,4 @@
-package Systems
+package IO
 
 import (
 	"JamEngine/main/Core"
@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-type QuitSystem struct {}
+type QuitSystem struct{}
 
 func (q QuitSystem) Execute(scene Core.Scene, entity Core.Entity, systemType Core.ReactType) {
 	if systemType != Core.WhenChanged {
@@ -19,7 +19,7 @@ func (q QuitSystem) Execute(scene Core.Scene, entity Core.Entity, systemType Cor
 		fmt.Println(err)
 		return
 	}
-	
+
 	inputComponent := inputComponentI.(Components.InputComponent)
 	if inputComponent.Type == Input.Quit {
 		gameComponentI, err := scene.GetComponentOfEntity(Components.GameComponentID, entity)

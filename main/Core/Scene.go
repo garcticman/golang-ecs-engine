@@ -15,20 +15,24 @@ type Scene interface {
 	GetComponentOfEntity(componentID string, entity Entity) (interface{}, error)
 	GetEntitiesWithFilter(filter Filter) []Entity
 
-	GetSystems() []System
-	AddSystem(system System)
+	GetInitializeSystems() []System
+	AddInitializeSystem(system System)
+
+	GetUpdateSystems() []System
+	AddUpdateSystem(system System)
 
 	GetReactiveSystems(componentID string) []ReactiveSystem
 	AddReactiveSystem(system ReactiveSystem, componentID string)
 }
 
 type SceneBase struct {
-	entities               []*Entity
-	entitiesToComponents   []map[string]interface{}
-	lastEntityId           Entity
+	entities             []*Entity
+	entitiesToComponents []map[string]interface{}
+	lastEntityId         Entity
 
-	systems []System
-	reactiveSystems map[string][]ReactiveSystem
+	initializeSystems []System
+	systems           []System
+	reactiveSystems   map[string][]ReactiveSystem
 }
 
 func (s *SceneBase) Init() {
@@ -119,11 +123,19 @@ func (s SceneBase) GetEntitiesWithFilter(filter Filter) (entities []Entity) {
 	return
 }
 
-func (s SceneBase) GetSystems() []System {
+func (s SceneBase) GetInitializeSystems() []System {
+	return s.initializeSystems
+}
+
+func (s *SceneBase) AddInitializeSystem(system System) {
+	s.initializeSystems = append(s.initializeSystems, system)
+}
+
+func (s SceneBase) GetUpdateSystems() []System {
 	return s.systems
 }
 
-func (s *SceneBase) AddSystem(system System) {
+func (s *SceneBase) AddUpdateSystem(system System) {
 	s.systems = append(s.systems, system)
 }
 
